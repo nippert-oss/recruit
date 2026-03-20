@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>정총무인테리어 지원하기</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Noto Sans KR', sans-serif;
+  background:#111;
+  max-width:460px;
+  margin:0 auto;
+  min-height:100vh;
+  padding:48px 28px 64px;
+  color:#fff;
+}
+
+/* 상단 */
+.top-label {
+  font-size:10px; font-weight:700;
+  color:#38B6FF; letter-spacing:3px;
+  text-transform:uppercase; margin-bottom:12px;
+}
+.top-title {
+  font-size:28px; font-weight:900;
+  color:#fff; line-height:1.3;
+  letter-spacing:-1px; margin-bottom:8px;
+}
+.top-sub {
+  font-size:13px; color:rgba(255,255,255,0.4);
+  line-height:1.7; margin-bottom:48px;
+}
+
+/* 폼 */
+.form-group {
+  display:flex; flex-direction:column;
+  gap:6px; margin-bottom:24px;
+}
+.form-label {
+  font-size:12px; font-weight:700;
+  color:rgba(255,255,255,0.55);
+  letter-spacing:0.5px;
+}
+.form-label span { color:#38B6FF; margin-left:2px; }
+
+input, textarea, select {
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;
+  padding:14px 16px;
+  font-size:15px;
+  color:#fff;
+  font-family:'Noto Sans KR', sans-serif;
+  outline:none;
+  transition:border-color 0.2s;
+  width:100%;
+}
+input::placeholder, textarea::placeholder { color:rgba(255,255,255,0.2); }
+input:focus, textarea:focus, select:focus {
+  border-color:#38B6FF;
+}
+select option { background:#1a1a1a; color:#fff; }
+textarea { resize:none; height:120px; line-height:1.7; }
+
+/* 라디오 그룹 */
+.radio-group {
+  display:flex; gap:10px;
+}
+.radio-btn {
+  flex:1;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;
+  padding:12px;
+  text-align:center;
+  font-size:14px; font-weight:500;
+  color:rgba(255,255,255,0.5);
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.radio-btn.active {
+  background:rgba(27,79,216,0.2);
+  border-color:#1B4FD8;
+  color:#fff;
+  font-weight:700;
+}
+
+/* 구분선 */
+.divider {
+  width:100%; height:1px;
+  background:rgba(255,255,255,0.07);
+  margin:8px 0 32px;
+}
+
+/* 제출 버튼 */
+.submit-btn {
+  width:100%; padding:18px;
+  background:#1B4FD8;
+  color:#fff;
+  font-size:16px; font-weight:900;
+  border-radius:10px;
+  border:none; cursor:pointer;
+  letter-spacing:0.3px;
+  box-shadow:0 8px 32px rgba(27,79,216,0.35);
+  transition:opacity 0.2s;
+  margin-top:8px;
+}
+.submit-btn:active { opacity:0.85; }
+.submit-btn:disabled { opacity:0.4; cursor:not-allowed; }
+
+/* 완료 화면 */
+.success {
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  min-height:60vh;
+  gap:16px;
+}
+.success-icon { font-size:52px; margin-bottom:8px; }
+.success-title { font-size:24px; font-weight:900; color:#fff; letter-spacing:-0.5px; }
+.success-title span { color:#38B6FF; }
+.success-desc { font-size:14px; color:rgba(255,255,255,0.4); line-height:1.8; }
+
+/* 로딩 */
+.loading { display:none; text-align:center; padding:20px 0; }
+.loading-text { font-size:13px; color:rgba(255,255,255,0.4); }
+</style>
+</head>
+<body>
+
+<!-- 폼 -->
+<div id="formWrap">
+  <div class="top-label">Apply</div>
+  <div class="top-title">지원하기</div>
+  <div class="top-sub">
+    정총무인테리어 현장소장 포지션에<br>
+    지원해주셔서 감사해요 😊
+  </div>
+
+  <div class="form-group">
+    <div class="form-label">이름 <span>*</span></div>
+    <input type="text" id="name" placeholder="홍길동" />
+  </div>
+
+  <div class="form-group">
+    <div class="form-label">연락처 <span>*</span></div>
+    <input type="tel" id="phone" placeholder="010-0000-0000" />
+  </div>
+
+  <div class="form-group">
+    <div class="form-label">경력 <span>*</span></div>
+    <select id="career">
+      <option value="" disabled selected>선택해주세요</option>
+      <option value="신입">신입</option>
+      <option value="1~2년">1~2년</option>
+      <option value="3~5년">3~5년</option>
+      <option value="6~10년">6~10년</option>
+      <option value="10년 이상">10년 이상</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <div class="form-label">차량 소유 여부 <span>*</span></div>
+    <div class="radio-group">
+      <div class="radio-btn" id="car-yes" onclick="selectCar('있음')">있음</div>
+      <div class="radio-btn" id="car-no" onclick="selectCar('없음')">없음</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="form-group">
+    <div class="form-label">간단한 지원동기 <span style="color:rgba(255,255,255,0.3); font-weight:400;">(선택)</span></div>
+    <textarea id="message" placeholder="2~3줄 정도로 자유롭게 작성해주세요"></textarea>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="loading-text">제출 중...</div>
+  </div>
+
+  <button class="submit-btn" id="submitBtn" onclick="submitForm()">지원서 제출하기</button>
+</div>
+
+<!-- 완료 화면 -->
+<div class="success" id="successWrap">
+  <div class="success-icon">🎉</div>
+  <div class="success-title">지원이 <span>완료</span>됐어요!</div>
+  <div class="success-desc">
+    검토 후 면접 일정을<br>
+    문자로 개별 안내드릴게요.<br><br>
+    지원해주셔서 감사합니다 😊
+  </div>
+</div>
+
+<script>
+let carOwner = '';
+
+function selectCar(val) {
+  carOwner = val;
+  document.getElementById('car-yes').classList.toggle('active', val === '있음');
+  document.getElementById('car-no').classList.toggle('active', val === '없음');
+}
+
+async function submitForm() {
+  const name = document.getElementById('name').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const career = document.getElementById('career').value;
+  const message = document.getElementById('message').value.trim();
+
+  if (!name || !phone || !career || !carOwner) {
+    alert('필수 항목을 모두 입력해주세요.');
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  const loading = document.getElementById('loading');
+  btn.disabled = true;
+  loading.style.display = 'block';
+
+  try {
+    await fetch('https://script.google.com/macros/s/AKfycbwFCLvaHhAlKRsjQrMNyJUF7mxIlEJ2Awx-FrN3P0CmIIJzlbDflznQAGzOI4Lpbe1U8g/exec', {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, phone, career, carOwner, message })
+    });
+
+    document.getElementById('formWrap').style.display = 'none';
+    const success = document.getElementById('successWrap');
+    success.style.display = 'flex';
+
+  } catch (err) {
+    alert('제출 중 오류가 발생했어요. 다시 시도해주세요.');
+    btn.disabled = false;
+    loading.style.display = 'none';
+  }
+}
+</script>
+</body>
+</html>
